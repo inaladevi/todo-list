@@ -2,11 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <title>Todo List</title>
 </head>
 <body>
+  <div id="app-layout">
+    
+    <aside id="sidebar">
+      <h1>// My To-Do's</h1>
 
-  <div id="app"></div>
+      <nav>
+        <ul id="sidebar-nav" style="list-style: none; padding: 0; margin-bottom: 30px;">
+          </ul>
+      </nav>
+      
+      <div id="controls">
+        <h3>New Project</h3>
+        <input type="text" id="new-project-name" placeholder="Project Name">
+        <button id="add-project-btn"><i class="fas fa-folder-plus"></i> Add Project</button>
+        
+        <h3 style="margin-top: 30px;">New Task</h3>
+        <input type="text" id="new-todo-title" placeholder="Task Title">
+        <input type="text" id="new-todo-desc" placeholder="Description (optional)">
+        <input type="date" id="new-todo-date">
+        
+        <select id="new-todo-priority">
+          <option value="Low">Low Priority</option>
+          <option value="Medium">Medium Priority</option>
+          <option value="High">High Priority</option>
+        </select>
+        
+        <select id="new-todo-project"></select>
+        
+        <button id="add-todo-btn"><i class="fas fa-plus"></i> Add Task</button>
+      </div>
+    </aside>
 
-</body>
+    <main id="content">
+      <div id="app">
+        </div>
+    </main>
+
+  </div>
+</body>>
 </html>
