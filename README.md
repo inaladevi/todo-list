@@ -7,7 +7,7 @@ The project focuses on **factory functions, state management, local storage, and
 
 ## Live Demo
 
-[View on GitHub Pages](https://yourusername.github.io/todo-app/)
+[View on GitHub Pages](https://inaladevi.github.io/todo-list/)
 
 ## Features
 
