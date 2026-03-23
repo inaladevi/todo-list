@@ -61,12 +61,32 @@ export function updateScreen() {
     editProjectBtn.textContent = "Edit Project";
     editProjectBtn.classList.add("btn-project");
 
+    let isEditingProject = false;
+
     editProjectBtn.addEventListener("click", function () {
-      const newName = prompt("Rename project:", projects[activeView].name);
-      if (newName && newName.trim() !== "") {
-        projects[activeView].name = newName;
-        saveToStorage();
-        updateScreen();
+      if (!isEditingProject) {
+        isEditingProject = true;
+        
+        const editInput = document.createElement("input");
+        editInput.type = "text";
+        editInput.value = projects[activeView].name;
+        editInput.classList.add("edit-task-input");
+        editInput.style.fontSize = "1.5rem"; 
+        editInput.style.fontWeight = "bold";
+        editInput.style.margin = "0";
+        editInput.style.flexGrow = "1";
+        editInput.style.marginRight = "20px";
+
+        headerContainer.replaceChild(editInput, mainHeader);
+        editProjectBtn.textContent = "Save";
+        editInput.focus();
+      } else {
+        const editInput = headerContainer.querySelector("input");
+        if (editInput.value.trim() !== "") {
+          projects[activeView].name = editInput.value;
+          saveToStorage();
+          updateScreen();
+        }
       }
     });
 
@@ -74,8 +94,20 @@ export function updateScreen() {
     deleteProjectBtn.textContent = "Delete Project";
     deleteProjectBtn.classList.add("btn-project", "btn-delete");
 
+    let confirmDelete = false;
+
     deleteProjectBtn.addEventListener("click", function () {
-      if (confirm(`Delete project "${projects[activeView].name}" and all its tasks?`)) {
+      if (!confirmDelete) {
+        confirmDelete = true;
+        deleteProjectBtn.textContent = "Are you sure?";
+        
+        setTimeout(() => {
+          if (confirmDelete) {
+            confirmDelete = false;
+            deleteProjectBtn.textContent = "Delete Project";
+          }
+        }, 3000);
+      } else {
         deleteProject(activeView);
         activeView = "Home";
         updateScreen();
