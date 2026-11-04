@@ -97,11 +97,23 @@ if (!savedData) {
   return;
 }
 
-  const parsedData = JSON.parse(savedData);
+  let parsedData;
+  try {
+    parsedData = JSON.parse(savedData);
+  } catch {
+    parsedData = null;
+  }
+
+  if (!Array.isArray(parsedData)) {
+    localStorage.removeItem("my-todo-data");
+    loadFromStorage();
+    return;
+  }
 
   parsedData.forEach(function(parsedProject) {
-    const rebuiltProject = createProject(parsedProject.name);
-    parsedProject.todos.forEach(function(savedTodo) {
+    const rebuiltProject = createProject(String(parsedProject?.name ?? "Untitled"));
+    const savedTodos = Array.isArray(parsedProject?.todos) ? parsedProject.todos : [];
+    savedTodos.forEach(function(savedTodo) {
       rebuiltProject.addTodo(savedTodo);
     });
 
@@ -124,4 +136,3 @@ export function deleteProject(projectIndex) {
   projects.splice(projectIndex, 1);
   saveToStorage();
 }
-

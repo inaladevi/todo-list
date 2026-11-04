@@ -35,7 +35,10 @@ export function updateScreen() {
 
   projects.forEach((project, index) => {
     const projLi = document.createElement("li");
-    projLi.innerHTML = `<i class="fas fa-folder"></i> ${project.name}`;
+    const folderIcon = document.createElement("i");
+    folderIcon.className = "fas fa-folder";
+    // append() inserts the name as plain text, so it can never be parsed as HTML
+    projLi.append(folderIcon, ` ${project.name}`);
     projLi.classList.add("nav-item", "nav-project-item");
     if (activeView === index) projLi.classList.add("active-nav");
     projLi.addEventListener("click", () => {
