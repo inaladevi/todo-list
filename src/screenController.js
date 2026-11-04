@@ -35,7 +35,10 @@ export function updateScreen() {
 
   projects.forEach((project, index) => {
     const projLi = document.createElement("li");
-    projLi.innerHTML = `<i class="fas fa-folder"></i> ${project.name}`;
+    const folderIcon = document.createElement("i");
+    folderIcon.className = "fas fa-folder";
+    // append() inserts the name as plain text, so it can never be parsed as HTML
+    projLi.append(folderIcon, ` ${project.name}`);
     projLi.classList.add("nav-item", "nav-project-item");
     if (activeView === index) projLi.classList.add("active-nav");
     projLi.addEventListener("click", () => {
@@ -61,32 +64,12 @@ export function updateScreen() {
     editProjectBtn.textContent = "Edit Project";
     editProjectBtn.classList.add("btn-project");
 
-    let isEditingProject = false;
-
     editProjectBtn.addEventListener("click", function () {
-      if (!isEditingProject) {
-        isEditingProject = true;
-        
-        const editInput = document.createElement("input");
-        editInput.type = "text";
-        editInput.value = projects[activeView].name;
-        editInput.classList.add("edit-task-input");
-        editInput.style.fontSize = "1.5rem"; 
-        editInput.style.fontWeight = "bold";
-        editInput.style.margin = "0";
-        editInput.style.flexGrow = "1";
-        editInput.style.marginRight = "20px";
-
-        headerContainer.replaceChild(editInput, mainHeader);
-        editProjectBtn.textContent = "Save";
-        editInput.focus();
-      } else {
-        const editInput = headerContainer.querySelector("input");
-        if (editInput.value.trim() !== "") {
-          projects[activeView].name = editInput.value;
-          saveToStorage();
-          updateScreen();
-        }
+      const newName = prompt("Rename project:", projects[activeView].name);
+      if (newName && newName.trim() !== "") {
+        projects[activeView].name = newName;
+        saveToStorage();
+        updateScreen();
       }
     });
 
@@ -94,20 +77,8 @@ export function updateScreen() {
     deleteProjectBtn.textContent = "Delete Project";
     deleteProjectBtn.classList.add("btn-project", "btn-delete");
 
-    let confirmDelete = false;
-
     deleteProjectBtn.addEventListener("click", function () {
-      if (!confirmDelete) {
-        confirmDelete = true;
-        deleteProjectBtn.textContent = "Are you sure?";
-        
-        setTimeout(() => {
-          if (confirmDelete) {
-            confirmDelete = false;
-            deleteProjectBtn.textContent = "Delete Project";
-          }
-        }, 3000);
-      } else {
+      if (confirm(`Delete project "${projects[activeView].name}" and all its tasks?`)) {
         deleteProject(activeView);
         activeView = "Home";
         updateScreen();
